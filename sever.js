@@ -5,12 +5,18 @@ const createError = require("http-errors");
 const port = process.env.PORT || 5000;
 const db = require("./db/lib");
 const morgan = require("morgan");
+
+const AuthRouter = require("./Routes/AuthRouter");
 var cors = require("cors");
 
+// use
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
+
+// use Route
+app.use("/auth", AuthRouter);
 
 app.get("/", (req, res) =>
   res.json({
