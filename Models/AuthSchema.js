@@ -1,4 +1,5 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -8,10 +9,7 @@ const UserSchema = new mongoose.Schema({
     index: true,
     lowercase: true,
     // validate: {
-    //   validator: function (v) {
-    //     // Regular expression for email validation
-    //     return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(v);
-    //   },
+    //   validator: emailValidator,
     //   message: (props) => `${props.value} is not a valid email address!`,
     // },
   },
@@ -21,5 +19,15 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-const User = new mongoose.model("User",UserSchema)
-module.exports = User
+UserSchema.pre("save", async function (next) {
+  try {
+    const salt = await bcrypt.genSaltSync(10);
+    const hashPass = await bcrypt.hash(this.password, salt);
+    this.password = hashPass;
+  } catch (error) {
+    next(error);
+  }
+});
+
+const User = new mongoose.model("User", UserSchema);
+module.exports = User;
