@@ -4,6 +4,7 @@ const app = express();
 const createError = require("http-errors");
 const port = process.env.PORT || 5000;
 const db = require("./db/lib");
+// morgan show speed 
 const morgan = require("morgan");
 
 const AuthRouter = require("./Routes/AuthRouter");

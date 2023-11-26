@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+// bcrypt MAKE 
 UserSchema.pre("save", async function (next) {
   try {
     const salt = await bcrypt.genSaltSync(10);
@@ -28,6 +29,15 @@ UserSchema.pre("save", async function (next) {
     next(error);
   }
 });
+
+// PASSWORD MATCH WITH (COMPARE)
+UserSchema.methods.isValidPassword = async function (password) {
+  try {
+    return bcrypt.compare(password, this.password);
+  } catch (error) {
+    next(error);
+  }
+};
 
 const User = new mongoose.model("User", UserSchema);
 module.exports = User;

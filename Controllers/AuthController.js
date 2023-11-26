@@ -12,12 +12,13 @@ const RegisterUser = async (req, res, next) => {
   // if (!email || !password) throw createError.BadRequest();
 
   const result = await AuthSchema.validateAsync(req.body);
+  res.send(result);
 
   const existingUser = await User.findOne({ email: result.email });
 
   try {
     if (!existingUser) {
-      // bycrypt
+      // bcrypt
       // const hashPass = await bcrypt.hash(result.password, 10);
 
       //   const User cant same with model User
@@ -49,7 +50,33 @@ const RegisterUser = async (req, res, next) => {
   }
 };
 
-const loginUser = async (req, res, next) => {};
+const loginUser = async (req, res, next) => {
+  try {
+    const result = await AuthSchema.validateAsync(req.body);
+    const user = await User.findOne({ email: result.email });
+    if (!user) throw createError.NotFound("User not Registered");
+
+    // const verifyPassword = await bcrypt.compare(result.password, user.password);
+
+    // compare with authSchema.js
+    const verifyPassword = await user.isValidPassword(result.password);
+    if (!verifyPassword) throw createError.Unauthorized("wrong Password");
+
+    const token = jwt.sign(
+      {
+        email: user.email,
+        id: user._id,
+      },
+      process.env.ACCESS_TOKEN
+    );
+
+    res.json({ user: user, token: token });
+  } catch (error) {
+    if (error.isJoi == true)
+      return next(createError.BadRequest("email/password invalid"));
+    next(error);
+  }
+};
 
 const refresh_tokenUser = async (req, res, next) => {};
 

@@ -6,3 +6,4 @@ const AuthSchema = Joi.object({
 });
 
 module.exports = AuthSchema;
+

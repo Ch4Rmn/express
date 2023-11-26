@@ -4,6 +4,7 @@ GET http://localhost:5000
 GET http://localhost:5000/111
 
 ###
+# Register 
 POST http://localhost:5000/auth/register
 Content-Type: application/json
 
@@ -14,7 +15,15 @@ Content-Type: application/json
 
 
 ###
+# Login 
 POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+
+     "email":"kkssssss@email.com",
+    "password":"linhtutkyssawhhh"
+}
 
 ###
 POST http://localhost:5000/auth/refresh-token
