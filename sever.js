@@ -4,9 +4,9 @@ const app = express();
 const createError = require("http-errors");
 const port = process.env.PORT || 5000;
 const db = require("./db/lib");
-// morgan show speed 
+// morgan show speed
 const morgan = require("morgan");
-
+const AuthMiddleware = require("./Middleware/authMiddleware.js");
 const AuthRouter = require("./Routes/AuthRouter");
 var cors = require("cors");
 
@@ -19,11 +19,12 @@ app.use(morgan("dev"));
 // use Route
 app.use("/auth", AuthRouter);
 
-app.get("/", (req, res) =>
+app.get("/", AuthMiddleware, async (req, res, next) => {
+  // const header = await req.headers["authorization"];
   res.json({
-    data: "hello i m Home!",
-  })
-);
+    header: "home Page",
+  });
+});
 
 //404 start ( should have in the end)
 // middleware

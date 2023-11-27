@@ -1,3 +1,4 @@
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const createError = require("http-errors");
@@ -12,7 +13,7 @@ const RegisterUser = async (req, res, next) => {
   // if (!email || !password) throw createError.BadRequest();
 
   const result = await AuthSchema.validateAsync(req.body);
-  res.send(result);
+  // res.send(result);
 
   const existingUser = await User.findOne({ email: result.email });
 
@@ -28,7 +29,7 @@ const RegisterUser = async (req, res, next) => {
       });
 
       //   jwt
-      const token = jwt.sign(
+      const token = await jwt.sign(
         { email: user.email, id: user._id },
         process.env.ACCESS_TOKEN,
         {
@@ -36,9 +37,18 @@ const RegisterUser = async (req, res, next) => {
         }
       );
 
+      const ref_token = await jwt.sign(
+        { email: user.email, id: user._id },
+        process.env.REFRESH_ACCESS_TOKEN,
+        {
+          expiresIn: "1y",
+        }
+      );
+
       res.status(201).json({
         User: user,
         token: token,
+        ref_token: ref_token,
         message: "User created (Complete)",
       });
     } else {
@@ -62,7 +72,7 @@ const loginUser = async (req, res, next) => {
     const verifyPassword = await user.isValidPassword(result.password);
     if (!verifyPassword) throw createError.Unauthorized("wrong Password");
 
-    const token = jwt.sign(
+    const token = await jwt.sign(
       {
         email: user.email,
         id: user._id,
@@ -70,7 +80,15 @@ const loginUser = async (req, res, next) => {
       process.env.ACCESS_TOKEN
     );
 
-    res.json({ user: user, token: token });
+    const ref_token = await jwt.sign(
+      { email: user.email, id: user._id },
+      process.env.REFRESH_ACCESS_TOKEN,
+      {
+        expiresIn: "1y",
+      }
+    );
+
+    res.json({ user: user, token: token, ref_token: ref_token });
   } catch (error) {
     if (error.isJoi == true)
       return next(createError.BadRequest("email/password invalid"));
@@ -78,7 +96,24 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-const refresh_tokenUser = async (req, res, next) => {};
+const refresh_tokenUser = async (req, res, next) => {
+  // const { token } = req.body;
+
+  // res.send(token);
+  try {
+    const { ref_token } = req.body;
+    // res.send({ref_token,message:"ok"})
+    if (!ref_token) throw createError.BadGateway("need token!");
+    const ref = await jwt.verify(ref_token, process.env.REFRESH_ACCESS_TOKEN);
+
+    const token = jwt.sign(ref, process.env.ACCESS_TOKEN);
+    const refToken = jwt.sign(ref, process.env.REFRESH_ACCESS_TOKEN);
+    res.send({ token, refToken });
+  } catch (error) {
+    if (error.isJoi == true) throw createError.Unauthorized();
+    next(error);
+  }
+};
 
 const logoutUser = async (req, res, next) => {};
 

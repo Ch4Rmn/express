@@ -1,7 +1,12 @@
 GET http://localhost:5000
 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxsbGxzZHNkc0BnbWFpbC5jb20iLCJpZCI6IjY1NjM1ZjViYTZiZDlkODE1MWM0ODA4ZSIsImlhdCI6MTcwMTAxNjA1OX0.W-cESC8hKFjZj8HokxH-nIi_GmbXl0qQa4xrlG3m3Xk
+
+
 ###
 GET http://localhost:5000/111
+
+
 
 ###
 # Register 
@@ -9,8 +14,8 @@ POST http://localhost:5000/auth/register
 Content-Type: application/json
 
 {
-    "email":"kkssssss@email.com",
-    "password":"linhtutkyssawhhh"
+    "email":"llllsdsds@gmail.com",
+    "password":"sdsdsdsjadas"
 }
 
 
@@ -21,13 +26,16 @@ Content-Type: application/json
 
 {
 
-     "email":"kkssssss@email.com",
-    "password":"linhtutkyssawhhh"
+    "email":"llllsdsds@gmail.com",
+    "password":"sdsdsdsjadas"
 }
 
 ###
 POST http://localhost:5000/auth/refresh-token
 
+{"ref_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxsbGxzZHNkc0BnbWFpbC5jb20iLCJpZCI6IjY1NjM1ZjViYTZiZDlkODE1MWM0ODA4ZSIsImlhdCI6MTcwMTA5Njg1MCwiZXhwIjoxNzMyNjU0NDUwfQ.h1cyBphv3Jujm53cDHmOus4-mjtB2rsxp4kKjviKOIA"
+   
+}
 ###
 DELETE  http://localhost:5000/auth/logout
 
