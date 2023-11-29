@@ -115,6 +115,26 @@ const refresh_tokenUser = async (req, res, next) => {
   }
 };
 
-const logoutUser = async (req, res, next) => {};
+const logoutUser = async (req, res, next) => {
+  try {
+    const { ref_token } = req.body;
+    // res.send({ref_token,message:"ok"})
+    if (!ref_token) throw createError.BadGateway("need token!");
+    const checkIfBlacklisted = await Blacklist.findOne({
+      ref_token: ref_token,
+    });
+    // Check if that token is blacklisted
+    if (checkIfBlacklisted) return res.sendStatus(204);
+    const blacklisted = await Blacklist({ ref_token: ref_token });
+    res.send({ blacklisted: blacklisted, message: "logout success" });
+  } catch (error) {
+    if (error.isJoi == true) throw createError.Unauthorized();
+    next(error);
+  }
+
+
+  // app.delete("/logout", (req,res)=>{refreshTokens = refreshTokens.filter( (c) => c != req.body.token)
+//remove the old refreshToken from the refreshTokens listres.status(204).send("Logged out!")})
+};
 
 module.exports = [RegisterUser, loginUser, refresh_tokenUser, logoutUser];

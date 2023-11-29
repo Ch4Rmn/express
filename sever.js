@@ -8,7 +8,16 @@ const db = require("./db/lib");
 const morgan = require("morgan");
 const AuthMiddleware = require("./Middleware/authMiddleware.js");
 const AuthRouter = require("./Routes/AuthRouter");
+// const client = require("./Helpers/init_redis");
 var cors = require("cors");
+
+
+// client.SET("foo", "bar");
+
+// client.SET("foo", (err, value) => {
+//   if (err) console.log(err.message);
+//   console.log(value);
+// });
 
 // use
 app.use(cors());
