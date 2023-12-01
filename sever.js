@@ -9,8 +9,8 @@ const morgan = require("morgan");
 const AuthMiddleware = require("./Middleware/authMiddleware.js");
 const AuthRouter = require("./Routes/AuthRouter");
 // const client = require("./Helpers/init_redis");
+const ItemRouter = require("./Routes/ItemRouter.js");
 var cors = require("cors");
-
 
 // client.SET("foo", "bar");
 
@@ -27,6 +27,8 @@ app.use(morgan("dev"));
 
 // use Route
 app.use("/auth", AuthRouter);
+
+app.use("/api/", ItemRouter);
 
 app.get("/", AuthMiddleware, async (req, res, next) => {
   // const header = await req.headers["authorization"];

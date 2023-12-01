@@ -39,3 +39,21 @@ POST http://localhost:5000/auth/refresh-token
 ###
 DELETE  http://localhost:5000/auth/logout
 
+
+
+
+
+####
+GET http://localhost:5000/api/items
+
+###
+POST http://localhost:5000/api/createItem
+Content-Type: application/json
+
+{
+    "name":"pen",
+    "description":"to write",
+    "price":3.99,
+    "product_id":1,
+    "userId":"65635f5ba6bd9d8151c4808e"
+}

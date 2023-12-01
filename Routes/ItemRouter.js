@@ -15,6 +15,6 @@ ItemRouter.post("/createItem", createItem);
 ItemRouter.post("/getItemById/:id", getItemById);
 ItemRouter.get("/PaginateAndSearch", paginateAndSearch);
 ItemRouter.put("/updateItem/:id", updateItem);
-ItemRouter.put("/deleteItem/:id", deleteItem);
+ItemRouter.delete("/deleteItem/:id", deleteItem);
 
 module.exports = ItemRouter;
