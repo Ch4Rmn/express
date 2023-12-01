@@ -12,7 +12,7 @@ const [
 
 ItemRouter.get("/items", getItems);
 ItemRouter.post("/createItem", createItem);
-ItemRouter.post("/getItemById/:id", getItemById);
+ItemRouter.get("/getItemById/:id", getItemById);
 ItemRouter.get("/PaginateAndSearch", paginateAndSearch);
 ItemRouter.put("/updateItem/:id", updateItem);
 ItemRouter.delete("/deleteItem/:id", deleteItem);

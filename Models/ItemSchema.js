@@ -26,5 +26,10 @@ const ItemSchema = new mongoose.Schema({
   },
 });
 
+ItemSchema.index({ "$**": "text" });
+
+// ItemSchema.createIndex({ name: "text" });
+
+
 const Item = new mongoose.model("Item", ItemSchema);
 module.exports = Item;
